@@ -25,15 +25,19 @@ const detalleCliente = (id) => {
 };
 
 const actualizarCliente = (nombre, email, id) => {
-    return fetch(`http://localhost:3000/perfil/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ nombre, email })
-    })
-    .then( (respuesta) => console.log(respuesta))
-    .catch( (err) => alert("Ocurrió un error"));
+    try {
+        return fetch(`http://localhost:3000/perfil/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ nombre, email })
+        })
+        .then( (respuesta) => console.log(respuesta));
+    } catch (error) {
+        console.log(error);
+        window.location.href="/screens/error.html";   
+    }
 }
 
 export const clientServices = {

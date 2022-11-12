@@ -34,13 +34,17 @@ const crearNuevaLinea = (nombre, email, id) => {
     linea.innerHTML = contenido;
     const btn = linea.querySelector("button");
     btn.addEventListener("click", () => {
-        const id = btn.id;
-        clientServices
+        try {
+            const id = btn.id;
+            clientServices
             .eliminarCliente(id)
             .then( (respuesta) => {
-                console.log(respuesta)
-        })
-        .catch(err => alert("Ocurrió un error!"))
+                    console.log(respuesta)
+            })
+        } catch (error) {
+            console.log(error);
+            window.location.href="/screens/error.html";
+        }
     });
 
     return linea;
@@ -48,12 +52,29 @@ const crearNuevaLinea = (nombre, email, id) => {
 
 const table = document.querySelector("[data-table]");
 
-clientServices
-    .listaClientes()
-    .then((data) => {
-        data.forEach( ({ nombre, email, id }) => {
-        const nuevaLinea = crearNuevaLinea(nombre, email, id);
-            table.appendChild(nuevaLinea);
+// Hace lo mismo que la función del final.
+
+// clientServices
+//     .listaClientes()
+//     .then((data) => {
+//         data.forEach( ({ nombre, email, id }) => {
+//         const nuevaLinea = crearNuevaLinea(nombre, email, id);
+//             table.appendChild(nuevaLinea);
+//         });
+// })
+// .catch((error) => alert("Ocurrió un error"));
+
+const render = async () =>  {
+    try {
+        const listaClientes = await clientServices.listaClientes();
+        listaClientes.forEach(elemento => {
+            table.appendChild(crearNuevaLinea(elemento.nombre,elemento.email, elemento.id));
         });
-})
-.catch((error) => alert("Ocurrió un error"));
+    }
+    catch(error){
+        console.log(error);
+        window.location.href="/screens/error.html";
+    }
+}
+
+render();
