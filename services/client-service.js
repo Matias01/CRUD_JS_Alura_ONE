@@ -19,8 +19,27 @@ const eliminarCliente = (id) => {
     });
 };
 
+const detalleCliente = (id) => {
+    return fetch(`http://localhost:3000/perfil/${id}`)
+        .then( (respuesta) => respuesta.json() );
+};
+
+const actualizarCliente = (nombre, email, id) => {
+    return fetch(`http://localhost:3000/perfil/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ nombre, email })
+    })
+    .then( (respuesta) => console.log(respuesta))
+    .catch( (err) => alert("Ocurrió un error"));
+}
+
 export const clientServices = {
     listaClientes,
     crearCliente,
     eliminarCliente,
+    detalleCliente,
+    actualizarCliente
 };
